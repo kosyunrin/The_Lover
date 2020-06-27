@@ -5162,10 +5162,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openCloseEvents: 0
   openCloseWindow: 0
-  selectedToolbar: 3
+  selectedToolbar: 2
   inputType: 0
   actionInput:
-    useInput: 0
+    useInput: 1
     isAxisInUse: 0
     keyboard: E
     keyboardAxis: 0
@@ -5227,18 +5227,7 @@ MonoBehaviour:
       m_Calls: []
   OnPlayerEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 88725946}
-        m_MethodName: PlayAnimation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnPlayerStay:
     m_PersistentCalls:
       m_Calls: []
