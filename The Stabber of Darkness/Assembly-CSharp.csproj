@@ -303,6 +303,7 @@
     <Compile Include="Assets\Invector-3rdPersonController\Shooter\Scripts\Weapon\vShooterEquipment.cs" />
     <Compile Include="Assets\Invector-3rdPersonController\Shooter\Scripts\Weapon\vShooterWeapon.cs" />
     <Compile Include="Assets\Invector-3rdPersonController\Shooter\Scripts\Weapon\vShooterWeaponBase.cs" />
+    <Compile Include="Assets\skTriggerAction.cs" />
     <None Include="Assets\Invector-3rdPersonController\Shooter\README_Shooter.txt" />
     <None Include="Assets\Invector-3rdPersonController\Basic Locomotion\README_Basic.txt" />
     <None Include="Assets\Invector-3rdPersonController\Melee Combat\3DModels\Other\Wires\Shaders\alpha_2sided.shader" />
