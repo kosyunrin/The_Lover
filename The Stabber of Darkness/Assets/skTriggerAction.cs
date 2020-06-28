@@ -4,67 +4,70 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-[vClassHeader("OpenCloseEnvents", openClose = false,iconName ="icon_ko")]
-public class skTriggerAction : vMonoBehaviour
+namespace SK
 {
-    [Tooltip("Start Events")]
-    public UnityEvent SEvents;
-    [Tooltip("End Events")]
-    public UnityEvent EEvents;
-    private bool EnventsSwtich;
-    [SerializeField] Animator xx;
-    void Start()
+    [vClassHeader("OpenCloseEnvents", openClose = false, iconName = "icon_ko")]
+    public class skTriggerAction : vMonoBehaviour
     {
-        EnventsSwtich = false;
-    }
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.E))
+        [Tooltip("Start Events")]
+        public UnityEvent SEvents;
+        [Tooltip("End Events")]
+        public UnityEvent EEvents;
+        private bool EnventsSwtich;
+        [SerializeField] Animator xx=null;
+        void Start()
         {
+            EnventsSwtich = false;
+        }
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
                 OpenCloseEnvents();
+            }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                xx.SetBool("IsPushPose", false);
+                xx.SetFloat("IsPushing", 1.0f);
+            }
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                xx.SetBool("IsPushPose", true);
+                xx.SetFloat("IsPushing", 0.0f);
+            }
         }
-        if(Input.GetKeyDown(KeyCode.W))
+        public void StartEvent()
         {
-            xx.SetBool("IsPushPose", false);
-            xx.SetFloat("IsPushing",1.0f);
+            SEvents.Invoke();
         }
-        if (Input.GetKeyUp(KeyCode.W))
+        public void EndtEvent()
         {
-            xx.SetBool("IsPushPose", true);
-            xx.SetFloat("IsPushing", 0.0f);
+            EEvents.Invoke();
         }
-    }
-    public void StartEvent()
-    {
-        SEvents.Invoke();
-    }
-    public void EndtEvent()
-    {
-        EEvents.Invoke();
-    }
-    //public void OpenCloseEnvents()
-    //{
-    //    EnventsSwtich = !EnventsSwtich;
-    //    if(EnventsSwtich) 
-    //        SEvents.Invoke();
-    //    else EEvents.Invoke();
-    //}
-    public void AnimatorSetBool(Animator a)
-    {
-        a.SetBool("IsPushStop", true);
-    }
-    public void OpenCloseEnvents()
-    {
-        EnventsSwtich = !EnventsSwtich;
-        if (EnventsSwtich)
+        //public void OpenCloseEnvents()
+        //{
+        //    EnventsSwtich = !EnventsSwtich;
+        //    if(EnventsSwtich) 
+        //        SEvents.Invoke();
+        //    else EEvents.Invoke();
+        //}
+        public void AnimatorSetBool(Animator a)
         {
-            xx.SetBool("IsPushPose", true);
-            xx.SetBool("IsPushStop", false);
+            a.SetBool("IsPushStop", true);
         }
-        else
+        public void OpenCloseEnvents()
         {
-            xx.SetBool("IsPushPose", false);
-            xx.SetBool("IsPushStop", true);
+            EnventsSwtich = !EnventsSwtich;
+            if (EnventsSwtich)
+            {
+                xx.SetBool("IsPushPose", true);
+                xx.SetBool("IsPushStop", false);
+            }
+            else
+            {
+                xx.SetBool("IsPushPose", false);
+                xx.SetBool("IsPushStop", true);
+            }
         }
     }
 }
