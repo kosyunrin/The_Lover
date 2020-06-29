@@ -36,6 +36,7 @@ TagManager:
   - PW - Nature
   - Synty Medium Farm
   - Synty Small Farm
+  - PushBox
   layers:
   - Default
   - TransparentFX

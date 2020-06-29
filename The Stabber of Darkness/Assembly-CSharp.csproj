@@ -305,6 +305,7 @@
     <Compile Include="Assets\Invector-3rdPersonController\Shooter\Scripts\Weapon\vShooterWeaponBase.cs" />
     <Compile Include="Assets\asdddd.cs" />
     <Compile Include="Assets\skFreeAction.cs" />
+    <Compile Include="Assets\skPushBox.cs" />
     <Compile Include="Assets\skStateMachine.cs" />
     <Compile Include="Assets\skTriggerAction.cs" />
     <None Include="Assets\Invector-3rdPersonController\Shooter\README_Shooter.txt" />
