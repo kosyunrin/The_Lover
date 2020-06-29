@@ -1,6 +1,8 @@
 ﻿using System.Runtime.Remoting.Messaging;
 using UnityEngine.Events;
 using UnityEngine;
+using System.Collections;
+
 namespace SK
 {
     public enum ActionID
@@ -14,7 +16,12 @@ namespace SK
         protected UnityEvent mExitEnvents;
         protected UnityEvent mStartActionEvents;
         protected UnityEvent mExitActionEvents;
+        protected UnityEvent mEnterPoseEnvents;
+        protected UnityEvent mExitPoseEvents;
         protected ActionID ID;
+        protected bool IsStopUpdate;
+        abstract public void SetPoseEnvents(UnityEvent Entervar, UnityEvent Exitvar);
+        abstract public void SetIsStoppingUpdate(bool stop);
         abstract public  void SetUnityEvents( UnityEvent Entervar,  UnityEvent Exitvar);
         abstract public void SetActionEvents(UnityEvent Entervar, UnityEvent Exitvar);
         abstract public ActionID GetStateId { get; }
@@ -59,6 +66,10 @@ namespace SK
     {
         const ActionID push = ActionID.pushing;
         bool pushingpose = false;
+        public Transform mTargetPos;
+        public Transform mHandPos;
+        public float DelayTime = 0;
+        public float RunTime = 0;
         public override ActionID GetStateId
         {
             get
@@ -71,10 +82,12 @@ namespace SK
         {
             if (mEnterEnvents != null)
                 mEnterEnvents.Invoke();
+            RunTime = 0.0f;
         }
 
         public override void Execute(Animator anim)
         {
+           // if (!IsStopUpdate) return;
             pushingpose = false;
 
             if (Input.GetKey(KeyCode.E))
@@ -82,6 +95,13 @@ namespace SK
                 anim.SetBool("IsPushPose", true);
                 anim.SetBool("IsPushStop", false);
                 pushingpose = true;
+                if(!IsStopUpdate)
+                RunTime += Time.deltaTime;
+                if (RunTime >= DelayTime)
+                {
+                    IsStopUpdate = true;
+                    RunTime = 0.0f;
+                }
             }
             if (!pushingpose)
             {
@@ -92,7 +112,7 @@ namespace SK
                 if(mExitActionEvents!=null)
                 mExitActionEvents.Invoke();
             }
-
+            if (!IsStopUpdate) return;
             if (pushingpose)
             {
                 if (Input.GetKey(KeyCode.W))
@@ -100,12 +120,18 @@ namespace SK
                     anim.SetBool("IsPushPose", false);
                     anim.SetBool("IsPulling", false);
                     anim.SetBool("IsPushing", true);
+                    mTargetPos.position = mHandPos.position;
+                    if (mStartActionEvents != null)
+                        mStartActionEvents.Invoke();
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
                     anim.SetBool("IsPushPose", false);
                     anim.SetBool("IsPushing", false);
                     anim.SetBool("IsPulling", true);
+                    mTargetPos.position = mHandPos.position;
+                    if (mStartActionEvents != null)
+                        mStartActionEvents.Invoke();
                 }
               
             }
@@ -128,6 +154,18 @@ namespace SK
             mEnterEnvents = Entervar;
             mExitEnvents = Exitvar;
         }
+
+        public override void SetIsStoppingUpdate(bool stop)
+        {
+            IsStopUpdate = stop;
+        }
+
+        public override void SetPoseEnvents(UnityEvent Entervar, UnityEvent Exitvar)
+        {
+            mEnterPoseEnvents = Entervar;
+            mExitPoseEvents = Exitvar;
+        }
+
     }
     public class skNoneState : skStateMachine
     {
@@ -140,6 +178,8 @@ namespace SK
                 return none;
             }
         }
+
+     
 
         public override void Enter()
         {
@@ -161,6 +201,17 @@ namespace SK
         {
             mStartActionEvents = Entervar;
             mExitActionEvents = Exitvar;
+        }
+
+        public override void SetIsStoppingUpdate(bool stop)
+        {
+            IsStopUpdate = stop;
+        }
+
+        public override void SetPoseEnvents(UnityEvent Entervar, UnityEvent Exitvar)
+        {
+            mEnterPoseEnvents = Entervar;
+            mExitPoseEvents = Exitvar;
         }
 
         public override void  SetUnityEvents( UnityEvent Entervar,  UnityEvent Exitvar)
